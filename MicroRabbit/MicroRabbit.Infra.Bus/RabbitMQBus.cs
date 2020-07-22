@@ -37,15 +37,20 @@ namespace MicroRabbit.Infra.Bus
             {
                 HostName = "localhost"
             };
-            using var connection = factory.CreateConnection();
-            using var channel = connection.CreateModel();
-            var eventName = @event.GetType().Name;
+            using (var connection = factory.CreateConnection())
+            {
+                using (var channel = connection.CreateModel())
+                {
+                    var eventName = @event.GetType().Name;
 
-            channel.QueueDeclare(eventName);
-            var message = JsonConvert.SerializeObject(@event);
-            var body = Encoding.UTF8.GetBytes(message);
+                    channel.QueueDeclare(eventName, false, false, false);
+                    var message = JsonConvert.SerializeObject(@event);
+                    var body = Encoding.UTF8.GetBytes(message);
 
-            channel.BasicPublish("", eventName, null, body);
+                    channel.BasicPublish("", eventName, null, body);
+                }
+            }
+
         }
 
         public void Subscribe<TEvent, THandler>()
@@ -92,7 +97,7 @@ namespace MicroRabbit.Infra.Bus
 
             var eventName = typeof(TEvent).Name;
 
-            channel.QueueDeclare(eventName);
+            channel.QueueDeclare(eventName, false, false, false);
 
             var consumer = new AsyncEventingBasicConsumer(channel);
             consumer.Received += Consumer_Recieved;

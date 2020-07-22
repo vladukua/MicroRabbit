@@ -1,12 +1,13 @@
-﻿using MicroRabbit.Banking.Domain.Models;
-using System;
+﻿using MicroRabbit.Banking.Application.Models;
+using MicroRabbit.Banking.Domain.Models;
 using System.Collections.Generic;
-using System.Text;
 
 namespace MicroRabbit.Banking.Application.Interfaces
 {
     public interface IAccountService
     {
         IReadOnlyCollection<Account> GetAccounts();
+
+        void Transfer(AccountTransfer accountTransfer);
     }
 }
