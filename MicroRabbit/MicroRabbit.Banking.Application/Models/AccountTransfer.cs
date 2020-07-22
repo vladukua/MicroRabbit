@@ -2,9 +2,9 @@
 {
     public class AccountTransfer
     {
-        public int SourceAccount { get; set; }
+        public int FromAccount { get; set; }
 
-        public int TargetAccount { get; set; }
+        public int ToAccount { get; set; }
 
         public decimal Amount { get; set; }
     }
